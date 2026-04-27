@@ -13,6 +13,6 @@ class Endereco extends Model
 
     public function usuario(): BelongsTo
     {
-        return $this->belongsTo(Usuario::class);
+        return $this->belongsTo(User::class);
     }
 }

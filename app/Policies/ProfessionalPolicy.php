@@ -37,7 +37,7 @@ class ProfessionalPolicy
      */
     public function update(User $user, Professional $professional): bool
     {
-        return false;
+        return $user->id === $professional->user_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class ProfessionalPolicy
      */
     public function delete(User $user, Professional $professional): bool
     {
-        return false;
+        return $user->id === $professional->user_id;
     }
 
     /**

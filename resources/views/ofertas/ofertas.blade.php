@@ -1,29 +1,28 @@
 <x-header />
 <x-page_content>
     <div class="w3-container">
-        <h5>Profissionais</h5>
-        <a href="{{ route('professionals.create') }}">Criar Profissional</a>
+        <h5>Ofertas</h5>
         <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nome</th>
-                    <th>Biografia</th>
+                    <th>Pedido</th>
+                    <th>Custo</th>
                     <th>Ver</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($professionals as $professional)
+                @foreach ($ofertas as $oferta)
                     <tr>
-                        <td>{{ $professional->id }}</td>
-                        <td>{{ $professional->user->name }}</td>
-                        <td>{{ $professional->biografia }}</td>
-                        <td><a href="{{ route('professionals.show', $professional->id) }}">Ver</a></td>
-                        <td><a href="{{ route('professionals.edit', $professional->id) }}">Editar</a></td>
+                        <td>{{ $oferta->id }}</td>
+                        <td>{{ $oferta->pedido_id }}</td>
+                        <td>{{ $oferta->custo }}</td>
+                        <td><a href="{{ route('ofertas.show', $oferta->id) }}">Ver</a></td>
+                        <td><a href="{{ route('ofertas.edit', $oferta->id) }}">Editar</a></td>
                         <td>
-                            <form action="{{ route('professionals.destroy', $professional->id) }}" method="POST">
+                            <form action="{{ route('ofertas.destroy', $oferta->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
 

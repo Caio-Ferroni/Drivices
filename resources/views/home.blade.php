@@ -1,5 +1,4 @@
 <h1>HOME</h1>
-
 @auth
     <h1>Logado Com Sucesso: {{ auth()->user()->name }}</h1>
     <a href="{{ route('area-segura') }}">Area Segura</a>

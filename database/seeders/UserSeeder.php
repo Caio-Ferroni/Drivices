@@ -13,13 +13,21 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // User::insert([
+        //     'name' => 'caio',
+        //     'email' => 'caio@gmail.com',
+        //     'password' => bcrypt('senha'),
+        //     'cpf' => '12345678910',
+        //     'nascimento' => date('Y-m-d'),
+        //     'tipo' => 'Administrador',
+        // ]);
         User::insert([
-            'name' => 'caio',
-            'email' => 'caio@gmail.com',
+            'name' => 'gdkicaj',
+            'email' => 'gdkicaj@gmail.com',
             'password' => bcrypt('senha'),
             'cpf' => '12345678910',
             'nascimento' => date('Y-m-d'),
-            'tipo' => 'Administrador',
+            'tipo' => 'Admin',
         ]);
     }
 }

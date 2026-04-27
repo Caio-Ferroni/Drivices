@@ -13,18 +13,22 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{$usuarios->id}}</td>
-                    <td>{{$usuarios->nome}}</td>
-                    <td>{{$usuarios->email}}</td>
-                    <td>{{$usuarios->cpf}}</td>
-
+                    <td>{{ $user->id }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->cpf }}</td>
                 </tr>
             </tbody>
         </table><br>
-        <table>
-
-
-        </table>
+        @if ($errors->any())
+            <div style="color: red;">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <button class="w3-button w3-dark-grey">Mais Usuarios<i class="fa fa-arrow-right"></i></button>
     </div>
 </x-page_content>

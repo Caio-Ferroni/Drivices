@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Professional;
 use App\Http\Requests\StoreProfessionalRequest;
 use App\Http\Requests\UpdateProfessionalRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ProfessionalController extends Controller
 {
@@ -31,8 +32,9 @@ class ProfessionalController extends Controller
     public function store(StoreProfessionalRequest $request)
     {
 
-        $existe = Professional::where('user_id', '=' , $request->user_id);
+        $existe = Professional::where('user_id', $request->user_id)->exists();
         if($existe){
+            
             return redirect()->route('professionals.index');
         }else{
         $professional = Professional::create([
@@ -53,7 +55,7 @@ class ProfessionalController extends Controller
      */
     public function show(Professional $professional)
     {
-        //
+        return view('professionals.professionals-show', ['professional' => $professional]);
     }
 
     /**
@@ -61,7 +63,7 @@ class ProfessionalController extends Controller
      */
     public function edit(Professional $professional)
     {
-        //
+        return view('professionals.professionals-edit', ['professional' => $professional]);
     }
 
     /**
@@ -69,7 +71,15 @@ class ProfessionalController extends Controller
      */
     public function update(UpdateProfessionalRequest $request, Professional $professional)
     {
-        //
+        if ($request->user()->cannot('update', $professional)){
+            abort(403);
+        }
+        
+        $data = array_filter($request->toArray());
+
+        $professional->update($data);
+
+        return redirect()->route('professionals.show', $professional->id);
     }
 
     /**
@@ -77,6 +87,13 @@ class ProfessionalController extends Controller
      */
     public function destroy(Professional $professional)
     {
-        //
+        if(Auth::user()->can('delete', $professional))
+        {
+            $professional->delete();
+        return redirect()->back()->with('success', 'Perfil profissional removido com sucesso!');
+       }
+       else{
+         return redirect()->back();
+       };
     }
 }

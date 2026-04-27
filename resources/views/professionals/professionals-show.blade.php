@@ -9,18 +9,15 @@
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Biografia</th>
-                    <th>Ver</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($professionals as $professional)
                     <tr>
                         <td>{{ $professional->id }}</td>
                         <td>{{ $professional->user->name }}</td>
                         <td>{{ $professional->biografia }}</td>
-                        <td><a href="{{ route('professionals.show', $professional->id) }}">Ver</a></td>
                         <td><a href="{{ route('professionals.edit', $professional->id) }}">Editar</a></td>
                         <td>
                             <form action="{{ route('professionals.destroy', $professional->id) }}" method="POST">
@@ -33,7 +30,7 @@
                             </form>
                         </td>
                     </tr>
-                @endforeach
+              
             </tbody>
         </table><br>
 

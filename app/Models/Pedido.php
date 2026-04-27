@@ -27,7 +27,7 @@ class Pedido extends Model
         return $this->belongsTo(Cupon::class);
     }
 
-    public function oferta(): HasMany
+    public function ofertas(): HasMany
     {
         return $this->hasMany(Oferta::class);
     }

@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-     public function index()
+    public function index()
     {
-        $users = User::where(['deleted_at' => null])->get(); 
-        return view('usuarios.usuarios', ['users' => $users]);
-     
-    
+        // $users = User::where(['deleted_at' => null])->get();
+        $users = User::all();
 
+        return view('usuarios.usuarios', ['users' => $users]);
     }
 
     /**
@@ -35,34 +35,48 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        // $usuarios = Usuario::find($id);
-        // return view('usuarios.usuarios-show', ['usuarios' => $usuarios]);
+        return view('usuarios.usuarios-show', ['user' => $user]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+
+        return view('usuarios.usuarios-edit', ['user' => $user]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+
+        
+
+        $data = array_filter($request->toArray());
+
+        if (isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
+
+        $user->update($data);
+
+        return redirect()->route('users.show', $user);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        // $usuarios = Usuario::find($id)->delete();
-        // return redirect()->route('usuarios.index')->with('success', 'Removido com sucesso!');
+        
+            $user->delete();
+
+            return redirect()->back()->with('success', 'Usuario removido com sucesso!');
+       
     }
 }

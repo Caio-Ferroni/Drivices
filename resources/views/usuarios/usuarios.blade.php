@@ -9,6 +9,7 @@
                     <th>Nome</th>
                     <th>E-mail</th>
                     <th>CPF</th>
+                    <th>Tipo</th>
                     <th>Ver</th>
                     <th>Editar</th>
                     <th>Excluir</th>
@@ -21,6 +22,7 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->cpf }}</td>
+                    <td>{{  $user->isProfessional() ? 'Profissional' : $user->tipo }}</td>
                     <td><a href="{{ route('users.show', $user->id)}}">Ver</a></td>
                     <td><a href="{{ route('users.edit', $user->id)}}">Editar</a></td>
                     <td>

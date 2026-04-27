@@ -3,11 +3,24 @@
 namespace App\Policies;
 
 use App\Models\Pedido;
+use App\Models\Professional;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 
 class PedidoPolicy
 {
+
+    public function before(User $user): bool|null
+    {
+        if ($user->isAdmin()){
+            return true;
+        } else {
+            return null;
+        }
+    }
+
+
     /**
      * Determine whether the user can view any models.
      */
@@ -21,7 +34,7 @@ class PedidoPolicy
      */
     public function view(User $user, Pedido $pedido): bool
     {
-        return false;
+        return Gate::allows('is_professional') || $user->id === $pedido->user_id;
     }
 
     /**
@@ -29,6 +42,7 @@ class PedidoPolicy
      */
     public function create(User $user): bool
     {
+        
         return false;
     }
 
@@ -37,7 +51,8 @@ class PedidoPolicy
      */
     public function update(User $user, Pedido $pedido): bool
     {
-        return false;
+       
+        return $user->id === $pedido->user_id;
     }
 
     /**
@@ -45,7 +60,7 @@ class PedidoPolicy
      */
     public function delete(User $user, Pedido $pedido): bool
     {
-        return false;
+        return $user->id === $pedido->user_id;
     }
 
     /**

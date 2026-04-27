@@ -54,4 +54,14 @@ class User extends Authenticatable implements MustVerifyEmail // Verifique se es
         return $this->hasOne(Endereco::class);
     }
 
+    public function isProfessional(): bool
+    {
+        return $this->professional()->exists();
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->tipo === "Admin";
+    }
+
 }

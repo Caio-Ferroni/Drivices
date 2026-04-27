@@ -37,7 +37,7 @@ class OfertaPolicy
      */
     public function update(User $user, Oferta $oferta): bool
     {
-        return false;
+        return $user->id === $oferta->user_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class OfertaPolicy
      */
     public function delete(User $user, Oferta $oferta): bool
     {
-        return false;
+        return $user->id === $oferta->user_id;
     }
 
     /**

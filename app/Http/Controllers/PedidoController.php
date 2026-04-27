@@ -7,6 +7,8 @@ use App\Http\Requests\StorePedidoRequest;
 use App\Http\Requests\UpdatePedidoRequest;
 use App\Models\Cupon;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Request;
 
 use function Symfony\Component\Clock\now;
 
@@ -19,9 +21,8 @@ class PedidoController extends Controller
     {
         
         $pedidos = Pedido::all();
-        return view('pedidos', [
+        return view('pedidos.pedidos', [
             'pedidos' => $pedidos,
-            // 'user' => $user,
         ]);
     }
 
@@ -30,7 +31,7 @@ class PedidoController extends Controller
      */
     public function create()
     {
-        return view('pedido-create');
+        return view('pedidos.pedidos-create');
     }
 
     /**
@@ -61,7 +62,7 @@ class PedidoController extends Controller
      */
     public function show(Pedido $pedido)
     {
-        //
+        return view('pedidos.pedidos-show', ['pedido' => $pedido]);
     }
 
     /**
@@ -69,7 +70,7 @@ class PedidoController extends Controller
      */
     public function edit(Pedido $pedido)
     {
-        //
+        return view('pedidos.pedidos-edit', ['pedido' => $pedido]);
     }
 
     /**
@@ -77,7 +78,16 @@ class PedidoController extends Controller
      */
     public function update(UpdatePedidoRequest $request, Pedido $pedido)
     {
-        //
+        if ($request->user()->cannot('update', $pedido)){
+            abort(403);
+        }
+        
+        $data = array_filter($request->toArray());
+
+        $pedido->update($data);
+
+        return redirect()->route('pedidos.show', $pedido->id);
+        
     }
 
     /**
@@ -85,6 +95,15 @@ class PedidoController extends Controller
      */
     public function destroy(Pedido $pedido)
     {
-        //
+       if(Auth::user()->can('delete', $pedido))
+        {
+            $pedido->delete();
+        return redirect()->back()->with('success', 'Pedido removido com sucesso!');
+       }
+       else{
+         return redirect()->back();
+       };
+       
+        
     }
 }
