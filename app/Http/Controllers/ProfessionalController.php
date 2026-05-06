@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Professional;
 use App\Http\Requests\StoreProfessionalRequest;
 use App\Http\Requests\UpdateProfessionalRequest;
+use App\Models\Professional;
 use Illuminate\Support\Facades\Auth;
 
 class ProfessionalController extends Controller
@@ -15,6 +15,7 @@ class ProfessionalController extends Controller
     public function index()
     {
         $professionals = Professional::all();
+
         return view('professionals.professionals', ['professionals' => $professionals]);
     }
 
@@ -32,22 +33,26 @@ class ProfessionalController extends Controller
     public function store(StoreProfessionalRequest $request)
     {
 
-        $existe = Professional::where('user_id', $request->user_id)->exists();
-        if($existe){
-            
-            return redirect()->route('professionals.index');
-        }else{
-        $professional = Professional::create([
-            'user_id' => $request->user_id,
-            'biografia' => $request->biografia,
-            'nota' => '5.0',
-            'stripe' => '1',
+        $userId = auth()->id();
 
-        ]); 
+        // Procura inclusive nos deletados
+        $professional = Professional::withTrashed()->where('user_id', $userId)->first();
 
-        $professional->save();
+        if ($professional) {
+            if ($professional->trashed()) {
+                $professional->restore(); // Tira do "lixo"
+                $professional->update($request->all()); // Atualiza com os novos dados
+
+                return redirect()->route('professionals.show', $professional)->with('success', 'Seu perfil profissional foi reativado!');
+            }
+
+            return redirect()->back()->with('error', 'Você já possui um perfil profissional ativo.');
         }
-        return redirect()->route('professionals.index');
+
+        // Se não existir nada, cria do zero normalmente
+        Professional::create($request->all() + ['user_id' => $userId]);
+
+        return redirect()->route('professionals.index')->with('success', 'Perfil profissional adicionado com sucesso!');
     }
 
     /**
@@ -71,15 +76,15 @@ class ProfessionalController extends Controller
      */
     public function update(UpdateProfessionalRequest $request, Professional $professional)
     {
-        if ($request->user()->cannot('update', $professional)){
+        if ($request->user()->cannot('update', $professional)) {
             abort(403);
         }
-        
+
         $data = array_filter($request->toArray());
 
         $professional->update($data);
 
-        return redirect()->route('professionals.show', $professional->id);
+        return redirect()->route('professionals.show', $professional->id)->with('success', 'Perfil profissional atualizado com sucesso!');
     }
 
     /**
@@ -87,13 +92,12 @@ class ProfessionalController extends Controller
      */
     public function destroy(Professional $professional)
     {
-        if(Auth::user()->can('delete', $professional))
-        {
+        if (Auth::user()->can('delete', $professional)) {
             $professional->delete();
-        return redirect()->back()->with('success', 'Perfil profissional removido com sucesso!');
-       }
-       else{
-         return redirect()->back();
-       };
+
+            return redirect()->back()->with('success', 'Perfil profissional removido com sucesso!');
+        } else {
+            return redirect()->back();
+        }
     }
 }

@@ -2,17 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
+#[Unguarded]
 class Endereco extends Model
 {
-    /** @use HasFactory<\Database\Factories\EnderecoFactory> */
+   
     use HasFactory;
 
-    public function usuario(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function pedido(): HasMany
+    {
+        return $this->hasMany(Pedido::class);
     }
 }

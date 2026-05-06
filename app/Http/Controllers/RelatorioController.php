@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Relatorio;
+use App\Models\Servico;
 use App\Http\Requests\StoreRelatorioRequest;
 use App\Http\Requests\UpdateRelatorioRequest;
 
@@ -19,9 +20,9 @@ class RelatorioController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Servico $servico)
     {
-        //
+        return view('relatorios.relatorios-create', ['servico' => $servico]);
     }
 
     /**
@@ -29,7 +30,15 @@ class RelatorioController extends Controller
      */
     public function store(StoreRelatorioRequest $request)
     {
-        //
+        $relatorio = Relatorio::create([
+            'servico_id' => $request->servico_id,
+            'status' => $request->status,
+            'relatorio' => $request->relatorio,
+            'foto' => $request->foto,
+        ]);
+
+        return redirect()->route('relatorios.show', $relatorio->id)
+        ->with('success', 'Serviço concluído!');
     }
 
     /**
@@ -37,7 +46,11 @@ class RelatorioController extends Controller
      */
     public function show(Relatorio $relatorio)
     {
-        //
+        if (Auth::user()->can('view', $relatorio)) {
+            return view('relatorios.relatorios-show', ['relatorio' => $relatorio]);
+        } else{
+           abort(404);
+        }
     }
 
     /**

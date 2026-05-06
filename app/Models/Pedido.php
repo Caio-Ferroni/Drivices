@@ -22,6 +22,10 @@ class Pedido extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function endereco(): BelongsTo{
+        return $this->belongsTo(Endereco::class);
+    }
+
     public function cupon(): BelongsTo
     {
         return $this->belongsTo(Cupon::class);

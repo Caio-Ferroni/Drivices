@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Oferta;
 use Illuminate\Database\Seeder;
 
 class OfertaSeeder extends Seeder
@@ -12,6 +12,11 @@ class OfertaSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Oferta::insert([
+            'pedido_id' => '1',
+            'professional_id' => '1',
+            'custo' => '800.99',
+            
+        ]);
     }
 }

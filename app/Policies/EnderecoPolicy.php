@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Endereco;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class EnderecoPolicy
 {
@@ -21,7 +20,7 @@ class EnderecoPolicy
      */
     public function view(User $user, Endereco $endereco): bool
     {
-        return false;
+        return $user->id === $endereco->user_id;
     }
 
     /**
@@ -29,7 +28,12 @@ class EnderecoPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        if ($user->hasEndereco()) {
+            return false;
+        } else {
+            return true;
+        }
+
     }
 
     /**
@@ -37,7 +41,7 @@ class EnderecoPolicy
      */
     public function update(User $user, Endereco $endereco): bool
     {
-        return false;
+        return $user->id === $endereco->user_id;
     }
 
     /**
@@ -45,7 +49,7 @@ class EnderecoPolicy
      */
     public function delete(User $user, Endereco $endereco): bool
     {
-        return false;
+        return $user->id === $endereco->user_id;
     }
 
     /**

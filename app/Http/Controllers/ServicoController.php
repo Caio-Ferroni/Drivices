@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Servico;
 use App\Http\Requests\StoreServicoRequest;
 use App\Http\Requests\UpdateServicoRequest;
+use App\Models\Servico;
 
 class ServicoController extends Controller
 {
@@ -13,7 +13,9 @@ class ServicoController extends Controller
      */
     public function index()
     {
-        //
+        $servicos = Servico::all();
+
+        return view('servicos.servicos', ['servicos' => $servicos]);
     }
 
     /**
@@ -21,7 +23,7 @@ class ServicoController extends Controller
      */
     public function create()
     {
-        //
+        return view('servicos.servicos-create');
     }
 
     /**
@@ -29,7 +31,15 @@ class ServicoController extends Controller
      */
     public function store(StoreServicoRequest $request)
     {
-        //
+        // dd($request);
+        $servico = Servico::create([
+            'pedido_id' => $request->pedido_id,
+            'oferta_id' => $request->oferta_id,
+            'status' => 'Pendente',
+            'confirmacao' => now(),
+            'realizacao' => now(),
+            'finalizacao' => now(),
+        ]);
     }
 
     /**
@@ -37,7 +47,11 @@ class ServicoController extends Controller
      */
     public function show(Servico $servico)
     {
-        //
+        if (Auth::user()->can('view', $servico)) {
+            return view('servicos.servicos-show', ['servico' => $servico]);
+        } else{
+           abort(404);
+        }
     }
 
     /**
@@ -62,5 +76,16 @@ class ServicoController extends Controller
     public function destroy(Servico $servico)
     {
         //
+    }
+
+    public function finalizarServico(Servico $servico)
+    {
+        
+            $servico->update([
+                'finalizacao' => now(),
+                'status' => 'Concluido',
+            ]);   
+
+            return redirect()->route('servicos.relatorios.create', $servico);
     }
 }

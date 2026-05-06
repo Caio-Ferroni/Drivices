@@ -21,7 +21,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        echo 'create';
+        //
     }
 
     /**
@@ -65,7 +65,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('users.show', $user);
+        return redirect()->route('users.show', $user)->with('success', 'Usuario atualizado com sucesso!');
     }
 
     /**

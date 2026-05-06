@@ -26,7 +26,5 @@
         </table>
         <button class="w3-button w3-dark-grey">Mais Usuarios<i class="fa fa-arrow-right"></i></button>
     </div>
-    
-
 </x-page_content>
 <x-footer />

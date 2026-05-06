@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Endereco;
 use App\Http\Requests\StoreEnderecoRequest;
 use App\Http\Requests\UpdateEnderecoRequest;
+use App\Models\Endereco;
+use App\Policies\EnderecoPolicy;
+use Illuminate\Support\Facades\Auth;
 
 class EnderecoController extends Controller
 {
@@ -13,7 +15,9 @@ class EnderecoController extends Controller
      */
     public function index()
     {
-        //
+        $enderecos = Endereco::all();
+
+        return view('enderecos.enderecos', ['enderecos' => $enderecos]);
     }
 
     /**
@@ -21,7 +25,12 @@ class EnderecoController extends Controller
      */
     public function create()
     {
-        //
+       if(Auth::user()->can('create', Endereco::class)){
+        return view('enderecos.enderecos-create');
+       } else {
+        return redirect()->back();
+       }
+        
     }
 
     /**
@@ -29,7 +38,23 @@ class EnderecoController extends Controller
      */
     public function store(StoreEnderecoRequest $request)
     {
-        //
+        
+         $endereco = Endereco::create([
+            'user_id' => $request->user_id,
+            'cep' => $request->cep,
+            'logradouro' => $request->logradouro,
+            'complemento' => $request->complemento ? $request->complemento : null,
+            'unidade' => $request->unidade,
+            'bairro' => $request->bairro,
+            'localidade' => $request->localidade,
+            'uf' => $request->uf,
+            'regiao' => $request->regiao,
+        ]);
+        
+        $endereco->save(); 
+
+        return redirect()->route('enderecos.index')->with('success', 'Endereço adicionado com sucesso!');
+        
     }
 
     /**
@@ -37,7 +62,11 @@ class EnderecoController extends Controller
      */
     public function show(Endereco $endereco)
     {
-        //
+        if (Auth::user()->can('view', $endereco)) {
+            return view('enderecos.enderecos-show', ['endereco' => $endereco]);
+        } else{
+           abort(404);
+        }
     }
 
     /**
@@ -61,6 +90,7 @@ class EnderecoController extends Controller
      */
     public function destroy(Endereco $endereco)
     {
-        //
+        $endereco->delete();
+        return redirect()->route('enderecos.index')->with('success', 'Endereco removido com sucesso!');
     }
 }

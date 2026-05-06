@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('servicos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pedido_id')->constrained();
-            $table->foreignId('oferta_id')->constrained();
+            $table->foreignId('oferta_id')->unique()->constrained();
             $table->text('status');
             $table->date('confirmacao');
             $table->date('realizacao');

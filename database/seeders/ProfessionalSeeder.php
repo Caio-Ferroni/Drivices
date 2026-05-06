@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Professional;
 use Illuminate\Database\Seeder;
 
 class ProfessionalSeeder extends Seeder
@@ -12,6 +12,11 @@ class ProfessionalSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+       Professional::insert([
+        'user_id' => '1',
+        'biografia' => 'biografia profissional',
+        'nota' => '5.0',
+        'stripe' => '1',
+       ]);
     }
 }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('enderecos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->integer('cep');
+            $table->foreignId('user_id')->unique()->constrained();
+            $table->string('cep');
             $table->string('logradouro');
             $table->string('complemento')->nullable();
             $table->string('unidade');

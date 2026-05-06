@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('endereco_id')->constrained();
             $table->foreignId('cupon_id')->nullable()->constrained();
             $table->decimal('orcamento', 10, 2);
             $table->string('descricao');

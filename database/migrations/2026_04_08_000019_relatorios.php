@@ -15,14 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('servico_id')->constrained();
             $table->string('status');
-            $table->string('relatorio_profissional');
-            $table->string('relatorio_usuario');
-            $table->string('problema')->nullable();
-            $table->string('descricao_problema')->nullable();
-            $table->decimal('custos_adicionais', 10, 2)->nullable();
-            $table->string('validacao_cliente')->nullable();
-            $table->string('foto_antes');
-            $table->string('foto_depois');
+            $table->string('relatorio');
+            $table->string('foto');
             $table->timestamps();
             
         });

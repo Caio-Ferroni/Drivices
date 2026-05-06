@@ -64,4 +64,8 @@ class User extends Authenticatable implements MustVerifyEmail // Verifique se es
         return $this->tipo === "Admin";
     }
 
+    public function hasEndereco(){
+        return $this->endereco ? true : false;
+    }
+
 }

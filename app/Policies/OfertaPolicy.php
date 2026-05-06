@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Oferta;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 
 class OfertaPolicy
 {
@@ -21,7 +22,7 @@ class OfertaPolicy
      */
     public function view(User $user, Oferta $oferta): bool
     {
-        return false;
+        return $user->id === $oferta->pedido->user_id || $user->id === $oferta->professional->user_id;
     }
 
     /**
@@ -29,7 +30,7 @@ class OfertaPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return Gate::allows('is_professional');
     }
 
     /**
@@ -37,7 +38,7 @@ class OfertaPolicy
      */
     public function update(User $user, Oferta $oferta): bool
     {
-        return $user->id === $oferta->user_id;
+        return $user->id === $oferta->professional->user_id;
     }
 
     /**
@@ -45,7 +46,7 @@ class OfertaPolicy
      */
     public function delete(User $user, Oferta $oferta): bool
     {
-        return $user->id === $oferta->user_id;
+        return $user->id === $oferta->professional->user_id;
     }
 
     /**

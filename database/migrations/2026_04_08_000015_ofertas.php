@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('pedido_id')->constrained();
             $table->foreignId('professional_id')->constrained();
             $table->decimal('custo', 10, 2);
+            $table->string('status')->default('Pendente');
             $table->timestamps();
             $table->softDeletes();
         });

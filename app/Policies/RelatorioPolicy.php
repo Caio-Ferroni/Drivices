@@ -21,7 +21,7 @@ class RelatorioPolicy
      */
     public function view(User $user, Relatorio $relatorio): bool
     {
-        return false;
+        return $user->id === $relatorio->servico->pedido->user_id || $user->id === $relatorio->servico->pedido->user_id;
     }
 
     /**

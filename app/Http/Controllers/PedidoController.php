@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pedido;
 use App\Http\Requests\StorePedidoRequest;
 use App\Http\Requests\UpdatePedidoRequest;
 use App\Models\Cupon;
-use Carbon\Carbon;
+use App\Models\Pedido;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Request;
-
-use function Symfony\Component\Clock\now;
 
 class PedidoController extends Controller
 {
@@ -19,8 +15,9 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        
+
         $pedidos = Pedido::all();
+
         return view('pedidos.pedidos', [
             'pedidos' => $pedidos,
         ]);
@@ -31,7 +28,12 @@ class PedidoController extends Controller
      */
     public function create()
     {
-        return view('pedidos.pedidos-create');
+        if (auth()->user()->can('create', Pedido::class)) {
+            return view('pedidos.pedidos-create');
+        } else {
+            return redirect()->back();
+        }
+
     }
 
     /**
@@ -39,11 +41,14 @@ class PedidoController extends Controller
      */
     public function store(StorePedidoRequest $request)
     {
+
+        $endereco = auth()->user()->endereco->id;
         $cupon = Cupon::where('nome', '=', $request->cupon_id)->first();
         $pedido = Pedido::create([
             'descricao' => $request->descricao,
             'user_id' => $request->id,
-            'cupon_id'  => $cupon ? $cupon->id : null,
+            'endereco_id' => $endereco,
+            'cupon_id' => $cupon ? $cupon->id : null,
             'orcamento' => $request->orcamento,
             'foto' => $request->foto,
             'emergencia' => $request->emergencia,
@@ -52,9 +57,7 @@ class PedidoController extends Controller
             'status' => 'Pendente',
         ]);
 
-        $pedido->save();
-
-        return redirect()->route('pedidos.index');
+        return redirect()->route('pedidos.index')->with('success', 'Pedido adicionado com sucesso!');
     }
 
     /**
@@ -62,7 +65,13 @@ class PedidoController extends Controller
      */
     public function show(Pedido $pedido)
     {
-        return view('pedidos.pedidos-show', ['pedido' => $pedido]);
+        if (Auth::user()->can('view', $pedido)) {
+            return view('pedidos.pedidos-show', ['pedido' => $pedido]);
+        } else{
+           abort(404);
+        }
+        
+
     }
 
     /**
@@ -78,16 +87,16 @@ class PedidoController extends Controller
      */
     public function update(UpdatePedidoRequest $request, Pedido $pedido)
     {
-        if ($request->user()->cannot('update', $pedido)){
+        if ($request->user()->cannot('update', $pedido)) {
             abort(403);
         }
-        
+
         $data = array_filter($request->toArray());
 
         $pedido->update($data);
 
-        return redirect()->route('pedidos.show', $pedido->id);
-        
+        return redirect()->route('pedidos.show', $pedido->id)->with('success', 'Pedido atualizado com sucesso!');
+
     }
 
     /**
@@ -95,15 +104,13 @@ class PedidoController extends Controller
      */
     public function destroy(Pedido $pedido)
     {
-       if(Auth::user()->can('delete', $pedido))
-        {
+        if (Auth::user()->can('delete', $pedido)) {
             $pedido->delete();
-        return redirect()->back()->with('success', 'Pedido removido com sucesso!');
-       }
-       else{
-         return redirect()->back();
-       };
-       
-        
+
+            return redirect()->back()->with('success', 'Pedido removido com sucesso!');
+        } else {
+            return redirect()->back();
+        }
+
     }
 }

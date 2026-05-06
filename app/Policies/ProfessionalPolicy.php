@@ -21,7 +21,7 @@ class ProfessionalPolicy
      */
     public function view(User $user, Professional $professional): bool
     {
-        return false;
+        return true;
     }
 
     /**
