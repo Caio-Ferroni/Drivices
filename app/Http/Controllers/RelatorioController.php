@@ -14,7 +14,9 @@ class RelatorioController extends Controller
      */
     public function index()
     {
-        //
+        if(Auth::user()->cannot('viewAny', Relatorio::class)){
+            abort(404);
+        }
     }
 
     /**
@@ -22,6 +24,9 @@ class RelatorioController extends Controller
      */
     public function create(Servico $servico)
     {
+         if (auth()->user()->cannot('create', Relatorio::class)) {
+            abort(404);
+        } 
         return view('relatorios.relatorios-create', ['servico' => $servico]);
     }
 
@@ -30,6 +35,9 @@ class RelatorioController extends Controller
      */
     public function store(StoreRelatorioRequest $request)
     {
+        if (auth()->user()->cannot('create', Relatorio::class)) {
+            abort(404);
+        } 
         $relatorio = Relatorio::create([
             'servico_id' => $request->servico_id,
             'status' => $request->status,
@@ -46,11 +54,11 @@ class RelatorioController extends Controller
      */
     public function show(Relatorio $relatorio)
     {
-        if (Auth::user()->can('view', $relatorio)) {
-            return view('relatorios.relatorios-show', ['relatorio' => $relatorio]);
-        } else{
+        if (Auth::user()->cannot('view', $relatorio)) {
            abort(404);
-        }
+        } 
+
+        return view('relatorios.relatorios-show', ['relatorio' => $relatorio]);
     }
 
     /**

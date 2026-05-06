@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Relatorio;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 
 class RelatorioPolicy
 {
@@ -13,7 +14,7 @@ class RelatorioPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return Gate::allows('is_admin');
     }
 
     /**
@@ -29,7 +30,7 @@ class RelatorioPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return Gate::allows('is_professional');
     }
 
     /**

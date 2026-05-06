@@ -23,7 +23,12 @@ class StorePedidoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'descricao' => ['required'],
+            'orcamento' => ['required'],
+            'foto' => ['required'],
+            'emergencia' => ['required'],
+            'disponibilidade' => ['required'],
+            'data_preferida' => ['required'],  
         ];
     }
 }

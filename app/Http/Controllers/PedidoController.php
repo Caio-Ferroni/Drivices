@@ -16,6 +16,11 @@ class PedidoController extends Controller
     public function index()
     {
 
+    // dd(Auth::user()->can('viewAny', Pedido::class));
+        if (Auth::user()->cannot('viewAny', Pedido::class)) {
+            abort(404);
+        }
+
         $pedidos = Pedido::all();
 
         return view('pedidos.pedidos', [
@@ -28,12 +33,12 @@ class PedidoController extends Controller
      */
     public function create()
     {
-        if (auth()->user()->can('create', Pedido::class)) {
-            return view('pedidos.pedidos-create');
-        } else {
-            return redirect()->back();
+        if (auth()->user()->cannot('create', Pedido::class)) {
+            return redirect()->route('pedidos.index')
+                ->with('error', 'Você precisa registrar um endereço antes de solicitar um serviço.');
         }
 
+        return view('pedidos.pedidos-create');
     }
 
     /**
@@ -41,19 +46,15 @@ class PedidoController extends Controller
      */
     public function store(StorePedidoRequest $request)
     {
-
-        $endereco = auth()->user()->endereco->id;
-        $cupon = Cupon::where('nome', '=', $request->cupon_id)->first();
-        $pedido = Pedido::create([
-            'descricao' => $request->descricao,
-            'user_id' => $request->id,
+        if (auth()->user()->cannot('create', Pedido::class)) {
+            return redirect()->route('pedidos.index')
+                ->with('error', 'Você precisa registrar um endereço antes de solicitar um serviço.');
+        }
+        $endereco = Auth::user()->endereco->id;
+        $user = Auth::user()->id;
+        Pedido::create($request->validated() + [
+            'user_id' => $user,
             'endereco_id' => $endereco,
-            'cupon_id' => $cupon ? $cupon->id : null,
-            'orcamento' => $request->orcamento,
-            'foto' => $request->foto,
-            'emergencia' => $request->emergencia,
-            'disponibilidade' => $request->disponibilidade,
-            'data_preferida' => $request->data_preferida,
             'status' => 'Pendente',
         ]);
 
@@ -65,12 +66,11 @@ class PedidoController extends Controller
      */
     public function show(Pedido $pedido)
     {
-        if (Auth::user()->can('view', $pedido)) {
-            return view('pedidos.pedidos-show', ['pedido' => $pedido]);
-        } else{
-           abort(404);
+        if (Auth::user()->cannot('view', $pedido)) {
+            abort(404);
         }
-        
+
+        return view('pedidos.pedidos-show', ['pedido' => $pedido]);
 
     }
 
@@ -79,6 +79,10 @@ class PedidoController extends Controller
      */
     public function edit(Pedido $pedido)
     {
+        if (Auth::user()->cannot('update', $pedido)) {
+            abort(404);
+        }
+        
         return view('pedidos.pedidos-edit', ['pedido' => $pedido]);
     }
 
@@ -87,13 +91,11 @@ class PedidoController extends Controller
      */
     public function update(UpdatePedidoRequest $request, Pedido $pedido)
     {
-        if ($request->user()->cannot('update', $pedido)) {
-            abort(403);
+        if (Auth::user()->cannot('update', $pedido)) {
+            abort(404);
         }
 
-        $data = array_filter($request->toArray());
-
-        $pedido->update($data);
+        $pedido->update($request->validated());
 
         return redirect()->route('pedidos.show', $pedido->id)->with('success', 'Pedido atualizado com sucesso!');
 
@@ -104,13 +106,12 @@ class PedidoController extends Controller
      */
     public function destroy(Pedido $pedido)
     {
-        if (Auth::user()->can('delete', $pedido)) {
-            $pedido->delete();
-
-            return redirect()->back()->with('success', 'Pedido removido com sucesso!');
-        } else {
-            return redirect()->back();
+        if (Auth::user()->cannot('delete', $pedido)) {
+            abort(404);
         }
 
+        $pedido->delete();
+
+        return redirect()->back()->with('success', 'Pedido removido com sucesso!');
     }
 }

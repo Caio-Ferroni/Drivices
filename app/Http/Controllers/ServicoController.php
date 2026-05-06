@@ -13,6 +13,11 @@ class ServicoController extends Controller
      */
     public function index()
     {
+
+        if (Auth::user()->cannot('viewAny', Servico::class)) {
+            abort(404);
+        }
+
         $servicos = Servico::all();
 
         return view('servicos.servicos', ['servicos' => $servicos]);
@@ -23,6 +28,11 @@ class ServicoController extends Controller
      */
     public function create()
     {
+
+        if (auth()->user()->cannot('create', Servico::class)) {
+            abort(404);
+        }
+
         return view('servicos.servicos-create');
     }
 
@@ -31,6 +41,10 @@ class ServicoController extends Controller
      */
     public function store(StoreServicoRequest $request)
     {
+
+        if (auth()->user()->cannot('create', Servico::class)) {
+            abort(404);
+        }
         // dd($request);
         $servico = Servico::create([
             'pedido_id' => $request->pedido_id,
@@ -47,11 +61,11 @@ class ServicoController extends Controller
      */
     public function show(Servico $servico)
     {
-        if (Auth::user()->can('view', $servico)) {
-            return view('servicos.servicos-show', ['servico' => $servico]);
-        } else{
-           abort(404);
+        if (Auth::user()->cannot('view', $servico)) {
+            abort(404);
         }
+
+        return view('servicos.servicos-show', ['servico' => $servico]);
     }
 
     /**
@@ -80,12 +94,12 @@ class ServicoController extends Controller
 
     public function finalizarServico(Servico $servico)
     {
-        
-            $servico->update([
-                'finalizacao' => now(),
-                'status' => 'Concluido',
-            ]);   
 
-            return redirect()->route('servicos.relatorios.create', $servico);
+        $servico->update([
+            'finalizacao' => now(),
+            'status' => 'Concluido',
+        ]);
+
+        return redirect()->route('servicos.relatorios.create', $servico);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Professional;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 
 class ProfessionalPolicy
 {
@@ -13,7 +14,7 @@ class ProfessionalPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,7 +30,7 @@ class ProfessionalPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**

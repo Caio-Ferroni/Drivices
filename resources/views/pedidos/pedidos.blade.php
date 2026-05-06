@@ -12,7 +12,6 @@
                     <th>ID</th>
                     <th>Usuario</th>
                     <th>Descrição</th>
-                    <th>Cupom</th>
                     <th>Ver</th>
                     <th>Ver Ofertas</th>
                     <th>Atualizar</th>
@@ -28,7 +27,6 @@
                             <td>{{ $pedido->id }}</td>
                             <td>{{ $pedido->user->name }}</td>
                             <td>{{ $pedido->descricao }}</td>
-                            <td>{{ $pedido->cupon ? $pedido->cupon->nome : 'Sem Cupom' }}</td>
                             <td><a href="{{ route('pedidos.show', $pedido) }}">Ver</a></td>
                             <td><a href="{{ route('pedidos.ofertas.index', $pedido) }}">Ver ofertas</a></td>
                             <td><a href="{{ route('pedidos.edit', $pedido) }}">Atualizar</a></td>

@@ -14,6 +14,10 @@ class ProfessionalController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->cannot('viewAny', Professional::class)) {
+            abort(404);
+        }
+
         $professionals = Professional::all();
 
         return view('professionals.professionals', ['professionals' => $professionals]);
@@ -24,6 +28,10 @@ class ProfessionalController extends Controller
      */
     public function create()
     {
+        if (auth()->user()->cannot('create', Professional::class)) {
+            abort(404);
+        }
+
         return view('professionals.professionals-create');
     }
 
@@ -32,6 +40,9 @@ class ProfessionalController extends Controller
      */
     public function store(StoreProfessionalRequest $request)
     {
+        if (auth()->user()->cannot('create', Professional::class)) {
+            abort(404);
+        }
 
         $userId = auth()->id();
 
@@ -60,6 +71,10 @@ class ProfessionalController extends Controller
      */
     public function show(Professional $professional)
     {
+        if (Auth::user()->cannot('view', $professional)) {
+            abort(404);
+        }
+
         return view('professionals.professionals-show', ['professional' => $professional]);
     }
 

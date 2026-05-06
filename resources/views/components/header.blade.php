@@ -52,8 +52,13 @@
         <div class="w3-bar-block">
             <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black"
                 onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-            <a href="{{ route('users.index') }}" class="w3-bar-item w3-button w3-padding w3-blue"><i
+                {{-- @can('viewAny', \App\Models\User::class) --}}
+                    <a href="{{ route('users.index') }}" class="w3-bar-item w3-button w3-padding w3-blue"><i
                     class="fa fa-users fa-fw"></i>  Usuarios</a>
+                {{-- @endcan --}}
+                    
+                
+            
             <a href="{{ route('pedidos.index') }}" class="w3-bar-item w3-button w3-padding"><i
                     class="fa fa-diamond fa-fw"></i>  Pedidos</a>
             <a href="{{ route('professionals.index') }}" class="w3-bar-item w3-button w3-padding"><i

@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Endereco;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 class EnderecoPolicy
 {
@@ -12,7 +13,7 @@ class EnderecoPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return Gate::allows('is_admin');
     }
 
     /**

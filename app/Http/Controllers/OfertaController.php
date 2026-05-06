@@ -17,6 +17,10 @@ class OfertaController extends Controller
      */
     public function index(Pedido $pedido)
     {
+        if (Auth::user()->cannot('viewAny', Oferta::class)) {
+            abort(404);
+        }
+
         $ofertas = $pedido->ofertas;
 
         return view('ofertas.ofertas', ['ofertas' => $ofertas]);
@@ -28,12 +32,11 @@ class OfertaController extends Controller
     public function create(Pedido $pedido)
     {
 
-        if (auth()->user()->can('create', Oferta::class)) {
-            return view('ofertas.ofertas-create', ['pedido' => $pedido]);
-        } else {
-            return redirect()->back();
+        if (auth()->user()->cannot('create', Oferta::class)) {
+            abort(404);
         }
 
+        return view('ofertas.ofertas-create', ['pedido' => $pedido]);
     }
 
     /**
@@ -41,6 +44,10 @@ class OfertaController extends Controller
      */
     public function store(StoreOfertaRequest $request, Pedido $pedido)
     {
+
+        if (auth()->user()->cannot('create', Oferta::class)) {
+            abort(404);
+        }
         $oferta = Oferta::create([
             'custo' => $request->custo,
             'pedido_id' => $pedido->id,
@@ -55,11 +62,11 @@ class OfertaController extends Controller
      */
     public function show(Oferta $oferta)
     {
-            if (Auth::user()->can('view', $oferta)) {
-                return view('ofertas.ofertas-show', ['oferta' => $oferta]);
-            } else {
-                abort(404);
-            }
+        if (Auth::user()->cannot('view', $oferta)) {
+            abort(404);
+        }
+
+        return view('ofertas.ofertas-show', ['oferta' => $oferta]);
     }
 
     /**
@@ -88,19 +95,20 @@ class OfertaController extends Controller
      */
     public function destroy(Oferta $oferta)
     {
-
-        if (Auth::user()->can('delete', $oferta)) {
-            $oferta->delete();
-
-            return redirect()->back()->with('success', 'Oferta removida com sucesso!');
-        } else {
-            return redirect()->back();
+        if (Auth::user()->cannot('delete', $oferta)) {
+            abort(404);
         }
 
+        $oferta->delete();
+
+        return redirect()->back()->with('success', 'Oferta removida com sucesso!');
     }
 
     public function aceitarOferta(Oferta $oferta)
     {
+        if(Auth::user()->cannot('aceitarOferta', Oferta::class)){
+            abort(404);
+        }
         // Usamos uma Transaction para garantir que, se um falhar, o outro não aconteça
         DB::transaction(function () use ($oferta) {
             // 1. Atualiza a oferta

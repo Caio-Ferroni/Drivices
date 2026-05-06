@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Servico;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 
 class ServicoPolicy
 {
@@ -13,7 +14,7 @@ class ServicoPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,7 +30,7 @@ class ServicoPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**

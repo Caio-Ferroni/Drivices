@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('endereco_id')->constrained();
-            $table->foreignId('cupon_id')->nullable()->constrained();
             $table->decimal('orcamento', 10, 2);
             $table->string('descricao');
             $table->string('foto');

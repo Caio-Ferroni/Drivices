@@ -13,11 +13,11 @@ class PedidoPolicy
 
     public function before(User $user): bool|null
     {
-        if ($user->isAdmin()){
+        if($user->can('is_admin')){
             return true;
-        } else {
-            return null;
         }
+        
+        return null;
     }
 
 
@@ -26,7 +26,7 @@ class PedidoPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**

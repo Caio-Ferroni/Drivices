@@ -10,7 +10,10 @@ class UserController extends Controller
 {
     public function index()
     {
-        // $users = User::where(['deleted_at' => null])->get();
+        if (Auth::user()->cannot('viewAny', User::class)) {
+            abort(404);
+        }
+
         $users = User::all();
 
         return view('usuarios.usuarios', ['users' => $users]);
@@ -37,6 +40,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        if (Auth::user()->cannot('view', $user)) {
+            abort(404);
+        }
+
         return view('usuarios.usuarios-show', ['user' => $user]);
     }
 
@@ -55,8 +62,6 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
 
-        
-
         $data = array_filter($request->toArray());
 
         if (isset($data['password'])) {
@@ -73,10 +78,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        
-            $user->delete();
 
-            return redirect()->back()->with('success', 'Usuario removido com sucesso!');
-       
+        $user->delete();
+
+        return redirect()->back()->with('success', 'Usuario removido com sucesso!');
+
     }
 }

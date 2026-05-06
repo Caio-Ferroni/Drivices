@@ -14,7 +14,7 @@ class OfertaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return Gate::allows('is_admin');
     }
 
     /**
@@ -46,7 +46,7 @@ class OfertaPolicy
      */
     public function delete(User $user, Oferta $oferta): bool
     {
-        return $user->id === $oferta->professional->user_id;
+        return $user->id === $oferta->professional->user_id && $oferta->status =! "Aceito";
     }
 
     /**
@@ -63,5 +63,10 @@ class OfertaPolicy
     public function forceDelete(User $user, Oferta $oferta): bool
     {
         return false;
+    }
+
+    public function aceitarOferta(User $user, Oferta $oferta): bool
+    {
+        return $user->id === $oferta->pedido->$user_id;
     }
 }

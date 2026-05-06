@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEnderecoRequest;
 use App\Http\Requests\UpdateEnderecoRequest;
 use App\Models\Endereco;
-use App\Policies\EnderecoPolicy;
 use Illuminate\Support\Facades\Auth;
 
 class EnderecoController extends Controller
@@ -15,6 +14,10 @@ class EnderecoController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->cannot('viewAny', Endereco::class)) {
+            abort(404);
+        }
+
         $enderecos = Endereco::all();
 
         return view('enderecos.enderecos', ['enderecos' => $enderecos]);
@@ -25,12 +28,12 @@ class EnderecoController extends Controller
      */
     public function create()
     {
-       if(Auth::user()->can('create', Endereco::class)){
+        if (Auth::user()->cannot('create', Endereco::class)) {
+            return redirect()->route('users.show', Auth::user()->id)
+                ->with('error', 'Você já possui um endereço registrado.');
+        }
+
         return view('enderecos.enderecos-create');
-       } else {
-        return redirect()->back();
-       }
-        
     }
 
     /**
@@ -38,8 +41,10 @@ class EnderecoController extends Controller
      */
     public function store(StoreEnderecoRequest $request)
     {
-        
-         $endereco = Endereco::create([
+        if (Auth::user()->cannot('create', Endereco::class)) {
+            abort(404);
+        }
+        $endereco = Endereco::create([
             'user_id' => $request->user_id,
             'cep' => $request->cep,
             'logradouro' => $request->logradouro,
@@ -50,11 +55,11 @@ class EnderecoController extends Controller
             'uf' => $request->uf,
             'regiao' => $request->regiao,
         ]);
-        
-        $endereco->save(); 
+
+        $endereco->save();
 
         return redirect()->route('enderecos.index')->with('success', 'Endereço adicionado com sucesso!');
-        
+
     }
 
     /**
@@ -62,11 +67,11 @@ class EnderecoController extends Controller
      */
     public function show(Endereco $endereco)
     {
-        if (Auth::user()->can('view', $endereco)) {
-            return view('enderecos.enderecos-show', ['endereco' => $endereco]);
-        } else{
-           abort(404);
+        if (Auth::user()->cannot('view', $endereco)) {
+            abort(404);
         }
+
+        return view('enderecos.enderecos-show', ['endereco' => $endereco]);
     }
 
     /**
@@ -74,7 +79,10 @@ class EnderecoController extends Controller
      */
     public function edit(Endereco $endereco)
     {
-        //
+        if (Auth::user()->cannot('update', $endereco)) {
+            abort(404);
+        }
+
     }
 
     /**
@@ -82,7 +90,13 @@ class EnderecoController extends Controller
      */
     public function update(UpdateEnderecoRequest $request, Endereco $endereco)
     {
-        //
+        if (Auth::user()->cannot('update', $endereco)) {
+            abort(404);
+        }
+
+        $endereco->update($request->validated());
+        
+        return redirect()->route('enderecos.index')->with('success', 'Endereço atualizado!');
     }
 
     /**
@@ -90,7 +104,13 @@ class EnderecoController extends Controller
      */
     public function destroy(Endereco $endereco)
     {
+
+        if (Auth::user()->cannot('delete', $endereco)) {
+            abort(404);
+        }
+
         $endereco->delete();
+
         return redirect()->route('enderecos.index')->with('success', 'Endereco removido com sucesso!');
     }
 }
