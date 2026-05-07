@@ -46,7 +46,7 @@ class RelatorioPolicy
      */
     public function delete(User $user, Relatorio $relatorio): bool
     {
-        return false;
+        return Gate::allows('is_professional');
     }
 
     /**

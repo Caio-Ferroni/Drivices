@@ -23,7 +23,7 @@ class StoreProfessionalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'biografia' => ['required'],
         ];
     }
 }

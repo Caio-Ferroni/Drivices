@@ -23,7 +23,7 @@ class UpdateProfessionalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'biografia' => ['required'],
         ];
     }
 }

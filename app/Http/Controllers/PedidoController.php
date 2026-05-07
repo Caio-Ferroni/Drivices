@@ -50,15 +50,16 @@ class PedidoController extends Controller
             return redirect()->route('pedidos.index')
                 ->with('error', 'Você precisa registrar um endereço antes de solicitar um serviço.');
         }
+
         $endereco = Auth::user()->endereco->id;
         $user = Auth::user()->id;
-        Pedido::create($request->validated() + [
+        $pedido = Pedido::create($request->validated() + [
             'user_id' => $user,
             'endereco_id' => $endereco,
             'status' => 'Pendente',
         ]);
 
-        return redirect()->route('pedidos.index')->with('success', 'Pedido adicionado com sucesso!');
+        return redirect()->route('pedidos.show', $pedido)->with('success', 'Pedido adicionado com sucesso!');
     }
 
     /**

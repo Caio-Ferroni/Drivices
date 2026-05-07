@@ -1,21 +1,19 @@
 <x-header />
 <x-page_content>
     <div class="w3-container">
-        <h5>Pedidos</h5>
+        <h5>Enderecos</h5>
         <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Orcamento</th>
-                    <th>Fazer Oferta</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ $pedido->id }}</td>
-                    <td>{{ $pedido->orcamento }}</td>
+                    <td>{{ $endereco->id }}</td>
+                    
 
-                    <td><a href="{{ route('pedidos.ofertas.create', $pedido) }}">Fazer Oferta</a></td>
+                   
 
                 </tr>
             </tbody>

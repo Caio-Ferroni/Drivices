@@ -23,7 +23,7 @@ class UpdateOfertaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+             'custo' => 'required',
         ];
     }
 }

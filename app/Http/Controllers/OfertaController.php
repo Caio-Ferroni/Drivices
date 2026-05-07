@@ -48,10 +48,10 @@ class OfertaController extends Controller
         if (auth()->user()->cannot('create', Oferta::class)) {
             abort(404);
         }
-        $oferta = Oferta::create([
-            'custo' => $request->custo,
+        $professional = Auth::user()->professional->id;
+        $oferta = Oferta::create($request->validated() + [
+            'professional_id' => $professional,
             'pedido_id' => $pedido->id,
-            'professional_id' => $request->professional_id,
         ]);
 
         return redirect()->route('ofertas.show', $oferta)->with('success', 'Oferta adicionada com sucesso!');
@@ -83,9 +83,11 @@ class OfertaController extends Controller
     public function update(UpdateOfertaRequest $request, Oferta $oferta)
     {
 
-        $data = array_filter($request->toArray());
+        if (Auth::user()->cannot('update', $oferta)) {
+            abort(404);
+        }
 
-        $oferta->update($data);
+        $oferta->update($request->validated());
 
         return redirect()->route('ofertas.show', $oferta->id)->with('success', 'Oferta atualizada com sucesso!');
     }

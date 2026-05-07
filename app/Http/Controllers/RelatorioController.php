@@ -38,14 +38,10 @@ class RelatorioController extends Controller
         if (auth()->user()->cannot('create', Relatorio::class)) {
             abort(404);
         } 
-        $relatorio = Relatorio::create([
-            'servico_id' => $request->servico_id,
-            'status' => $request->status,
-            'relatorio' => $request->relatorio,
-            'foto' => $request->foto,
-        ]);
 
-        return redirect()->route('relatorios.show', $relatorio->id)
+        $relatorio = Relatorio::create($request->validated());
+
+        return redirect()->route('relatorios.show', $relatorio)
         ->with('success', 'Serviço concluído!');
     }
 
@@ -66,7 +62,7 @@ class RelatorioController extends Controller
      */
     public function edit(Relatorio $relatorio)
     {
-        //
+        return view('relatorios.relatorios-edit', ['relatorio' => $relatorio]);
     }
 
     /**

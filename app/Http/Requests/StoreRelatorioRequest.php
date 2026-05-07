@@ -23,7 +23,9 @@ class StoreRelatorioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'relatorio' => ['required'],
+            'servico_id' => ['required'],
+            'foto' => ['required'], 
         ];
     }
 }

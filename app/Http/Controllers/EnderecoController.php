@@ -44,21 +44,14 @@ class EnderecoController extends Controller
         if (Auth::user()->cannot('create', Endereco::class)) {
             abort(404);
         }
-        $endereco = Endereco::create([
-            'user_id' => $request->user_id,
-            'cep' => $request->cep,
-            'logradouro' => $request->logradouro,
-            'complemento' => $request->complemento ? $request->complemento : null,
-            'unidade' => $request->unidade,
-            'bairro' => $request->bairro,
-            'localidade' => $request->localidade,
-            'uf' => $request->uf,
-            'regiao' => $request->regiao,
+
+        $user = Auth::user()->id;
+        $endereco = Endereco::create($request->validated() + [
+            'user_id' => $user,
         ]);
+        
 
-        $endereco->save();
-
-        return redirect()->route('enderecos.index')->with('success', 'Endereço adicionado com sucesso!');
+        return redirect()->route('enderecos.show', $endereco)->with('success', 'Endereço adicionado com sucesso!');
 
     }
 
@@ -95,7 +88,7 @@ class EnderecoController extends Controller
         }
 
         $endereco->update($request->validated());
-        
+
         return redirect()->route('enderecos.index')->with('success', 'Endereço atualizado!');
     }
 
