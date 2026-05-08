@@ -1,36 +1,63 @@
-  <footer class="w3-container w3-padding-16 w3-light-grey">
-      <h4>FOOTER</h4>
-      <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-  </footer>
+<footer>
+    <div class="container-fluid px-5">
 
-  <!-- End page content -->
-  </div>
+        <div class="footer-top row g-5">
 
-  <script>
-      // Get the Sidebar
-      var mySidebar = document.getElementById("mySidebar");
+            <div class="footer-brand col-lg-4 col-md-6">
+                <div class="nav-logo footer-logo">Drivices<span class="dot">.</span></div>
+                <p>O hub que conecta pessoas a profissionais de confiança. Rápido, seguro e sem burocracia.</p>
+                <div class="footer-social d-flex gap-2 mt-3">
+                    <a class="social-btn" href="#">in</a>
+                    <a class="social-btn" href="#">ig</a>
+                    <a class="social-btn" href="#">tw</a>
+                    <a class="social-btn" href="#">yt</a>
+                </div>
+            </div>
 
-      // Get the DIV with overlay effect
-      var overlayBg = document.getElementById("myOverlay");
+            <div class="footer-col col-lg-2 col-md-6 col-6">
+                <h5>Plataforma</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">Como funciona</a></li>
+                    <li><a href="#">Categorias</a></li>
+                    <li><a href="#">Profissionais em destaque</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
 
-      // Toggle between showing and hiding the sidebar, and add overlay effect
-      function w3_open() {
-          if (mySidebar.style.display === 'block') {
-              mySidebar.style.display = 'none';
-              overlayBg.style.display = "none";
-          } else {
-              mySidebar.style.display = 'block';
-              overlayBg.style.display = "block";
-          }
-      }
+            <div class="footer-col col-lg-2 col-md-6 col-6">
+                <h5>Profissionais</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">Cadastro profissional</a></li>
+                    <li><a href="#">Plano Plus</a></li>
+                    <li><a href="#">Central de ajuda</a></li>
+                    <li><a href="#">Verificação</a></li>
+                </ul>
+            </div>
 
-      // Close the sidebar with the close button
-      function w3_close() {
-          mySidebar.style.display = "none";
-          overlayBg.style.display = "none";
-      }
-  </script>
+            <div class="footer-col col-lg-2 col-md-6 col-6">
+                <h5>Empresa</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">Sobre a Drivices</a></li>
+                    <li><a href="#">Carreiras</a></li>
+                    <li><a href="#">Contato</a></li>
+                    <li><a href="#">Imprensa</a></li>
+                </ul>
+            </div>
 
-  </body>
+        </div>
 
-  </html>
+        <div class="footer-bottom d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <p class="mb-0">© 2025 Drivices. Todos os direitos reservados.</p>
+            <div class="footer-links d-flex gap-4">
+                <a href="#">Termos de uso</a>
+                <a href="#">Privacidade</a>
+                <a href="#">Cookies</a>
+            </div>
+        </div>
+
+    </div>
+</footer>
+
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

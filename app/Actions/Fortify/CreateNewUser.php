@@ -22,6 +22,11 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
+        $cpf = explode(".", $input['cpf']);
+        $cpf = implode("", $cpf);
+        $cpf = explode("-", $cpf);
+        $cpf = implode("", $cpf);
+         
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
@@ -38,7 +43,7 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
-            'cpf' => $input['cpf'],
+            'cpf' => $cpf,
             'nascimento' => $input['nascimento'],
             'tipo' => $input['tipo'],
             

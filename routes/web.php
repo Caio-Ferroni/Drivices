@@ -27,6 +27,7 @@ Route::resource('pedidos.ofertas', OfertaController::class)->shallow();
 Route::resource('enderecos', EnderecoController::class);
 Route::resource('servicos', ServicoController::class);
 Route::resource('servicos.relatorios', RelatorioController::class)->shallow();
+Route::resource('relatorios', RelatorioController::class);
 
 // Route::resource('ofertas', OfertaController::class);
 

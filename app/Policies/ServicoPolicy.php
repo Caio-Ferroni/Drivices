@@ -9,6 +9,17 @@ use Illuminate\Support\Facades\Gate;
 
 class ServicoPolicy
 {
+
+
+
+     public function before(User $user): bool|null
+    {
+        if($user->can('is_admin')){
+            return true;
+        }
+        
+        return null;
+    }
     /**
      * Determine whether the user can view any models.
      */

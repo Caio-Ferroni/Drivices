@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreServicoRequest;
 use App\Http\Requests\UpdateServicoRequest;
 use App\Models\Servico;
+use Illuminate\Support\Facades\Auth;
+
 
 class ServicoController extends Controller
 {

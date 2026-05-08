@@ -4,11 +4,19 @@ namespace App\Policies;
 
 use App\Models\Oferta;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Gate;
 
 class OfertaPolicy
 {
+    public function before(User $user): ?bool
+    {
+        if ($user->can('is_admin')) {
+            return true;
+        }
+
+        return null;
+    }
+
     /**
      * Determine whether the user can view any models.
      */
@@ -46,7 +54,7 @@ class OfertaPolicy
      */
     public function delete(User $user, Oferta $oferta): bool
     {
-        return $user->id === $oferta->professional->user_id && $oferta->status =! "Aceito";
+        return $user->id === $oferta->professional->user_id && $oferta->status = ! 'Aceito';
     }
 
     /**

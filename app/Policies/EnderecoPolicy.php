@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Gate;
 
 class EnderecoPolicy
 {
+    public function before(User $user): ?bool
+    {
+        if ($user->can('is_admin')) {
+            return true;
+        }
+
+        return null;
+    }
     /**
      * Determine whether the user can view any models.
      */

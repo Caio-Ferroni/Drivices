@@ -1,76 +1,45 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-    <title>W3.CSS Template</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        html,
-        body,
-        h1,
-        h2,
-        h3,
-        h4,
-        h5 {
-            font-family: "Raleway", sans-serif
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Drivices — Encontre o profissional certo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
 </head>
+<body>
 
-<body class="w3-light-grey">
+<nav class="navbar navbar-expand-lg site-navbar fixed-top">
+    <div class="container-fluid px-5">
 
-    <!-- Top container -->
-    <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
-        <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey"
-            onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
-        <span class="w3-bar-item w3-right">Logo</span>
-    </div>
+        <a class="nav-logo navbar-brand" href="{{ url('/') }}">Drivices<span class="dot">.</span></a>
 
-    <!-- Sidebar/menu -->
-    <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
-        <div class="w3-container w3-row">
-            <div class="w3-col s4">
-                <img src="/w3images/avatar2.png" class="w3-circle w3-margin-right" style="width:46px">
-            </div>
-            <div class="w3-col s8 w3-bar">
-                <span>Welcome, <strong>{{ auth()->user()->name }}</strong></span><br>
-                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
-                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
-                <form action="{{ route('logout') }}" method="POST">
-                    <button type="submit" class="fa fa-cog"></button>
-                </form>
-            </div>
-        </div>
-        <hr>
-        <div class="w3-container">
-            <h5>Dashboard</h5>
-        </div>
-        <div class="w3-bar-block">
-            <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black"
-                onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-                {{-- @can('viewAny', \App\Models\User::class) --}}
-                    <a href="{{ route('users.index') }}" class="w3-bar-item w3-button w3-padding w3-blue"><i
-                    class="fa fa-users fa-fw"></i>  Usuarios</a>
-                {{-- @endcan --}}
-                    
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="nav-links navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Como funciona</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Categorias</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Para profissionais</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Preços</a></li>
+            </ul>
+
+            <div class="nav-actions d-flex align-items-center gap-2">
+                @auth
+                    Bem Vindo, {{ auth()->user()->name }}!
+                    <form action="{{ route('logout') }}" method="POST">
+                        <button>sair</button>
+                    </form>
+                    @else
+                    <a href="{{ route('login') }}" class="btn btn-ghost">Entrar</a>
+                <a href="{{ route('register') }}" class="btn btn-primary-custom">Criar conta grátis</a>
+                @endauth
                 
-            
-            <a href="{{ route('pedidos.index') }}" class="w3-bar-item w3-button w3-padding"><i
-                    class="fa fa-diamond fa-fw"></i>  Pedidos</a>
-            <a href="{{ route('professionals.index') }}" class="w3-bar-item w3-button w3-padding"><i
-                    class="fa fa-bullseye fa-fw"></i>  Profissionais</a>
-            <a href="{{ route('enderecos.index') }}" class="w3-bar-item w3-button w3-padding"><i
-                    class="fa fa-bank fa-fw"></i>  Endereços</a>
-            {{-- <a href="{{ route('pedidos.ofertas.index') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Ofertas</a> --}}
-            <a href="{{ route('servicos.index') }}" class="w3-bar-item w3-button w3-padding"><i
-                    class="fa fa-bell fa-fw"></i>  Serviços</a>
-            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>  General</a>
-            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  History</a>
-            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>
-                Settings</a><br><br>
+            </div>
         </div>
-    </nav>
+
+    </div>
+</nav>

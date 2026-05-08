@@ -7,6 +7,15 @@ use Illuminate\Support\Facades\Gate;
 
 class UserPolicy
 {
+    public function before(User $user): ?bool
+    {
+        if ($user->can('is_admin')) {
+            return true;
+        }
+
+        return null;
+    }
+
     public function viewAny(User $user): bool
     {
         return Gate::allows('is_admin');

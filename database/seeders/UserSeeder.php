@@ -55,6 +55,14 @@ class UserSeeder extends Seeder
                 'nascimento' => date('Y-m-d'),
                 'tipo' => 'Usuario',
             ],
+            [
+                'name' => 'nnamqahc',
+                'email' => 'nnam@gmail.com',
+                'password' => bcrypt('senha'),
+                'cpf' => '12340670900',
+                'nascimento' => date('Y-m-d'),
+                'tipo' => 'Admin',
+            ],
 
         ]);
 

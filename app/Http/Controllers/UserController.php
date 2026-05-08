@@ -61,7 +61,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-
+        
         $data = array_filter($request->toArray());
 
         if (isset($data['password'])) {
