@@ -6,6 +6,7 @@ use App\Models\Relatorio;
 use App\Models\Servico;
 use App\Http\Requests\StoreRelatorioRequest;
 use App\Http\Requests\UpdateRelatorioRequest;
+use Illuminate\Support\Facades\Auth;
 
 class RelatorioController extends Controller
 {
@@ -17,6 +18,8 @@ class RelatorioController extends Controller
         if(Auth::user()->cannot('viewAny', Relatorio::class)){
             abort(404);
         }
+        $relatorios = Relatorio::all();
+        return view('relatorios.relatorios', ['relatorios' => $relatorios]);
     }
 
     /**

@@ -22,7 +22,7 @@ class RelatorioPolicy
      */
     public function viewAny(User $user): bool
     {
-        return Gate::allows('is_admin');
+        return Gate::allows('is_admin') || Gate::allows('is_professional');
     }
 
     /**

@@ -44,7 +44,7 @@ class ProfessionalController extends Controller
             abort(404);
         }
 
-        $userId = auth()->id();
+        $userId = Auth::user()->id;
 
         // Procura inclusive nos deletados
         $professional = Professional::withTrashed()->where('user_id', $userId)->first();
@@ -58,10 +58,12 @@ class ProfessionalController extends Controller
             }
 
             return redirect()->back()->with('error', 'Você já possui um perfil profissional ativo.');
+
+            
         }
 
         // Se não existir nada, cria do zero normalmente
-        Professional::create($request->all() + ['user_id' => $userId]);
+        Professional::create($request->all() + ['user_id' => $userId, 'stripe' => '90', 'nota' => '5.0']);
 
         return redirect()->route('professionals.index')->with('success', 'Perfil profissional adicionado com sucesso!');
     }

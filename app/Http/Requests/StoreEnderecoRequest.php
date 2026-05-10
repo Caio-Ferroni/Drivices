@@ -23,13 +23,13 @@ class StoreEnderecoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cep' => ['required|max:11'],
+            'cep' => ['required','max:11'],
             'logradouro' => ['required'],
             'complemento' => ['nullable'],
             'unidade' => ['required'],
             'bairro' => ['required'],
             'localidade' => ['required'],
-            'uf' => ['required|max:2'],
+            'uf' => ['required', 'max:2'],
             'regiao' => ['required'],
         ];
     }

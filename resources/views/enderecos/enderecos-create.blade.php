@@ -2,7 +2,7 @@
 <x-content>
 
     <div class="d-flex align-items-center gap-3 mb-4">
-        <a href="{{ route('enderecos.index') }}" class="btn-dash-back">
+        <a href="{{ route('users.show', auth()->id()) }}" class="btn-dash-back">
             <i class="bi bi-arrow-left"></i>
             Voltar
         </a>
@@ -25,26 +25,31 @@
                 <div class="row g-4">
 
                     {{-- CEP --}}
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="dash-field @error('cep') has-error @enderror">
                             <label class="dash-label" for="cep">
                                 CEP <span class="auth-req">*</span>
                             </label>
                             <div class="dash-input-wrap">
-                                <i class="bi bi-search dash-input-icon" id="cep-icon"></i>
+                                <i class="bi bi-mailbox dash-input-icon"></i>
                                 <input
-                                    class="dash-input"
+                                    class="dash-input dash-input-has-suffix"
                                     type="text"
                                     id="cep"
                                     name="cep"
                                     value="{{ old('cep') }}"
                                     placeholder="00000-000"
                                     maxlength="9"
+                                    autocomplete="off"
                                     data-mask="cep"
-                                    autocomplete="postal-code"
                                 />
+                                <span class="dash-input-suffix" id="cep-spinner" style="display:none;">
+                                    <span class="dash-cep-spinner"></span>
+                                </span>
                             </div>
-                            <span class="dash-field-hint" id="cep-hint"></span>
+                            <span class="dash-field-hint" id="cep-hint">
+                                Digite o CEP para preencher os campos automaticamente.
+                            </span>
                             @error('cep')
                                 <span class="dash-field-error">
                                     <i class="bi bi-exclamation-circle"></i>
@@ -55,9 +60,11 @@
                     </div>
 
                     {{-- LOGRADOURO --}}
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="dash-field @error('logradouro') has-error @enderror">
-                            <label class="dash-label" for="logradouro">Logradouro</label>
+                            <label class="dash-label" for="logradouro">
+                                Logradouro <span class="auth-req">*</span>
+                            </label>
                             <div class="dash-input-wrap">
                                 <i class="bi bi-signpost dash-input-icon"></i>
                                 <input
@@ -67,6 +74,7 @@
                                     name="logradouro"
                                     value="{{ old('logradouro') }}"
                                     placeholder="Rua, Avenida..."
+                                    autocomplete="off"
                                 />
                             </div>
                             @error('logradouro')
@@ -79,9 +87,11 @@
                     </div>
 
                     {{-- UNIDADE --}}
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="dash-field @error('unidade') has-error @enderror">
-                            <label class="dash-label" for="unidade">Unidade / Número</label>
+                            <label class="dash-label" for="unidade">
+                                Unidade / Número
+                            </label>
                             <div class="dash-input-wrap">
                                 <i class="bi bi-hash dash-input-icon"></i>
                                 <input
@@ -90,7 +100,8 @@
                                     id="unidade"
                                     name="unidade"
                                     value="{{ old('unidade') }}"
-                                    placeholder="Ex: 42"
+                                    placeholder="Ex: 42, Apto 3"
+                                    autocomplete="off"
                                 />
                             </div>
                             @error('unidade')
@@ -103,7 +114,7 @@
                     </div>
 
                     {{-- COMPLEMENTO --}}
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="dash-field @error('complemento') has-error @enderror">
                             <label class="dash-label" for="complemento">
                                 Complemento
@@ -117,7 +128,8 @@
                                     id="complemento"
                                     name="complemento"
                                     value="{{ old('complemento') }}"
-                                    placeholder="Apto, Bloco, Sala..."
+                                    placeholder="Bloco, andar, sala..."
+                                    autocomplete="off"
                                 />
                             </div>
                             @error('complemento')
@@ -130,9 +142,11 @@
                     </div>
 
                     {{-- BAIRRO --}}
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="dash-field @error('bairro') has-error @enderror">
-                            <label class="dash-label" for="bairro">Bairro</label>
+                            <label class="dash-label" for="bairro">
+                                Bairro <span class="auth-req">*</span>
+                            </label>
                             <div class="dash-input-wrap">
                                 <i class="bi bi-map dash-input-icon"></i>
                                 <input
@@ -142,6 +156,7 @@
                                     name="bairro"
                                     value="{{ old('bairro') }}"
                                     placeholder="Bairro"
+                                    autocomplete="off"
                                 />
                             </div>
                             @error('bairro')
@@ -156,7 +171,9 @@
                     {{-- CIDADE --}}
                     <div class="col-md-4">
                         <div class="dash-field @error('localidade') has-error @enderror">
-                            <label class="dash-label" for="localidade">Cidade</label>
+                            <label class="dash-label" for="localidade">
+                                Cidade <span class="auth-req">*</span>
+                            </label>
                             <div class="dash-input-wrap">
                                 <i class="bi bi-geo dash-input-icon"></i>
                                 <input
@@ -166,6 +183,7 @@
                                     name="localidade"
                                     value="{{ old('localidade') }}"
                                     placeholder="Cidade"
+                                    autocomplete="off"
                                 />
                             </div>
                             @error('localidade')
@@ -178,11 +196,13 @@
                     </div>
 
                     {{-- UF --}}
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="dash-field @error('uf') has-error @enderror">
-                            <label class="dash-label" for="uf">UF</label>
+                            <label class="dash-label" for="uf">
+                                UF <span class="auth-req">*</span>
+                            </label>
                             <div class="dash-input-wrap">
-                                <i class="bi bi-geo-alt dash-input-icon"></i>
+                                <i class="bi bi-flag dash-input-icon"></i>
                                 <input
                                     class="dash-input"
                                     type="text"
@@ -191,6 +211,7 @@
                                     value="{{ old('uf') }}"
                                     placeholder="SP"
                                     maxlength="2"
+                                    autocomplete="off"
                                 />
                             </div>
                             @error('uf')
@@ -203,9 +224,11 @@
                     </div>
 
                     {{-- REGIÃO --}}
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="dash-field @error('regiao') has-error @enderror">
-                            <label class="dash-label" for="regiao">Região</label>
+                            <label class="dash-label" for="regiao">
+                                Região <span class="auth-req">*</span>
+                            </label>
                             <div class="dash-input-wrap">
                                 <i class="bi bi-compass dash-input-icon"></i>
                                 <input
@@ -215,6 +238,7 @@
                                     name="regiao"
                                     value="{{ old('regiao') }}"
                                     placeholder="Sudeste"
+                                    autocomplete="off"
                                 />
                             </div>
                             @error('regiao')
@@ -230,7 +254,7 @@
             </div>
 
             <div class="dash-card-footer d-flex justify-content-end gap-3">
-                <a href="{{ route('enderecos.index') }}" class="btn-dash-back">
+                <a href="{{ route('users.show', auth()->id()) }}" class="btn-dash-back">
                     Cancelar
                 </a>
                 <button type="submit" class="btn-dash-primary">

@@ -14,7 +14,6 @@
 {{-- ════════ SIDEBAR ════════ --}}
 <aside class="admin-sidebar">
 
-    {{-- LOGO --}}
     <div class="sidebar-logo">
         <a href="{{ url('/') }}" class="logo-text">Drivices<span class="dot">.</span></a>
         @can('is_admin')
@@ -22,7 +21,6 @@
         @endcan
     </div>
 
-    {{-- MEU PERFIL — todos os usuários --}}
     <div class="sidebar-section-label">Minha Conta</div>
     <a href="{{ route('users.show', auth()->id()) }}"
        class="nav-item {{ Route::currentRouteName() === 'users.show' ? 'active' : '' }}">
@@ -30,7 +28,6 @@
         Meu Perfil
     </a>
 
-    {{-- USUÁRIOS — apenas admin --}}
     @can('is_admin')
         <div class="sidebar-section-label">Administração</div>
         <a href="{{ route('users.index') }}"
@@ -40,7 +37,6 @@
         </a>
     @endcan
 
-    {{-- PROFISSIONAIS — todos os usuários --}}
     @cannot('is_admin')
         <div class="sidebar-section-label">Explorar</div>
     @endcannot
@@ -50,39 +46,32 @@
         Profissionais
     </a>
 
-    {{-- OPERAÇÕES --}}
     <div class="sidebar-section-label">Operações</div>
 
-    {{-- PEDIDOS — todos os usuários, label muda para profissional --}}
     <a href="{{ route('pedidos.index') }}"
        class="nav-item {{ Route::currentRouteName() === 'pedidos.index' ? 'active' : '' }}">
         <i class="bi bi-clipboard-text nav-icon"></i>
         @can('is_professional')
             Pedidos Disponíveis
+        @elsecan('is_admin')
+            Pedidos
         @else
-            @can('is_admin')
-                Pedidos
-            @else
-                Meus Pedidos
-            @endcan
+            Meus Pedidos
         @endcan
     </a>
 
-    {{-- SERVIÇOS — todos os usuários --}}
     <a href="{{ route('servicos.index') }}"
        class="nav-item {{ Route::currentRouteName() === 'servicos.index' ? 'active' : '' }}">
         <i class="bi bi-tools nav-icon"></i>
         Serviços
     </a>
 
-    {{-- RELATÓRIOS — todos os usuários --}}
     <a href="{{ route('relatorios.index') }}"
        class="nav-item {{ Route::currentRouteName() === 'relatorios.index' ? 'active' : '' }}">
         <i class="bi bi-file-earmark-text nav-icon"></i>
         Relatórios
     </a>
 
-    {{-- PERFIL NO RODAPÉ DA SIDEBAR --}}
     <div class="sidebar-bottom">
         <div class="admin-profile">
             <div class="admin-ava">
@@ -109,7 +98,6 @@
 {{-- ════════ MAIN WRAPPER ════════ --}}
 <div class="admin-main">
 
-    {{-- TOPBAR --}}
     <header class="admin-topbar">
         <div class="topbar-left">
             <div class="page-title">{{ $pageTitle ?? 'Dashboard' }}</div>
@@ -133,5 +121,14 @@
         </div>
     </header>
 
-    {{-- SLOT: conteúdo da página --}}
+    {{-- CONTEÚDO DA PÁGINA --}}
     {{ $slot }}
+
+</div>{{-- /admin-main --}}
+
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('js/masks.js') }}"></script>
+@stack('scripts')
+
+</body>
+</html>

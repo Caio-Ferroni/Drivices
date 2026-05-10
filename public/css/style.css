@@ -2720,3 +2720,103 @@ tbody td {
     border-top: 1px solid rgba(91,68,242,0.07);
     margin: 20px 0;
 }
+
+/* ─── VIACEP ─── */
+.dash-input-autofilled {
+    border-color: var(--p3);
+    background: var(--p5);
+}
+.dash-field-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+.dash-field-hint-error   { color: #F24B5B; }
+.dash-field-hint-success { color: #22C97A; }
+.dash-cep-spinner {
+    width: 14px; height: 14px;
+    border: 2px solid var(--p4);
+    border-top-color: var(--p1);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── TABLE: CURRENCY ─── */
+.dash-td-currency {
+    font-family: 'Lexend', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+/* ─── TEXTAREA ─── */
+.dash-textarea {
+    padding-top: 11px;
+    padding-bottom: 11px;
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+}
+
+.dash-textarea-icon {
+    top: 14px;
+    transform: none;
+}
+
+/* ─── SELECT ─── */
+.dash-select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236B6880' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+}
+
+/* ─── FILE INPUT ─── */
+.dash-file-wrap { position: relative; }
+
+.dash-file-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.dash-file-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--gray-light);
+    border: 1.5px dashed var(--p4);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-bottom: 0;
+}
+.dash-file-label:hover {
+    border-color: var(--p1);
+    background: var(--p5);
+    color: var(--p1);
+}
+.dash-file-label i { font-size: 16px; }
+
+/* ─── LINK INLINE ─── */
+.dash-link {
+    color: var(--p1);
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: gap 0.18s;
+}
+.dash-link:hover { gap: 8px; color: var(--p2); }

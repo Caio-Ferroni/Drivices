@@ -32,5 +32,6 @@
 
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('js/masks.js') }}"></script>
+<script src="{{ asset('js/viacep.js') }}"></script>
 </body>
 </html>

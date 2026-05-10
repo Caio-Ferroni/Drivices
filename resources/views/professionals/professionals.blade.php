@@ -1,43 +1,97 @@
-<x-header />
-<x-page_content>
-    <div class="w3-container">
-        <h5>Profissionais</h5>
-        <a href="{{ route('professionals.create') }}">Criar Profissional</a>
-        <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Biografia</th>
-                    <th>Ver</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($professionals as $professional)
+<x-header_admin pageTitle="Profissionais" breadcrumb="Gerenciamento">
+<x-content>
+
+    @if(session('success'))
+        <div class="dash-alert dash-alert-success">
+            <i class="bi bi-check-circle"></i>
+            <span>{{ session('success') }}</span>
+        </div>
+    @endif
+
+    <div class="dash-card">
+
+        <div class="dash-card-header">
+            <div>
+                <div class="dash-card-title">
+                    <i class="bi bi-briefcase"></i>
+                    Profissionais
+                </div>
+                <div class="dash-card-sub">
+                    @can('is_admin')
+                        Listagem completa de todos os profissionais da plataforma
+                    @else
+                        Encontre profissionais disponíveis para seu pedido
+                    @endcan
+                </div>
+            </div>
+        </div>
+
+        <div class="dash-table-wrap">
+            <table class="dash-table">
+                <thead>
                     <tr>
-                        <td>{{ $professional->id }}</td>
-                        <td>{{ $professional->user->name }}</td>
-                        <td>{{ $professional->biografia }}</td>
-                        <td><a href="{{ route('professionals.show', $professional->id) }}">Ver</a></td>
-                        <td><a href="{{ route('professionals.edit', $professional->id) }}">Editar</a></td>
-                        <td>
-                            <form action="{{ route('professionals.destroy', $professional->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-
-                                <button type="submit">
-                                    Excluir
-                                </button>
-                            </form>
-                        </td>
+                        <th>Profissional</th>
+                        <th>Biografia</th>
+                        <th class="text-center">Ações</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table><br>
+                </thead>
+                <tbody>
+                    @forelse($professionals as $professional)
+                        <tr>
+                            <td>
+                                <div class="dash-td-user">
+                                    <div class="dash-td-ava">
+                                        {{ strtoupper(substr($professional->user->name, 0, 2)) }}
+                                    </div>
+                                    <div>
+                                        <div class="dash-td-name">{{ $professional->user->name }}</div>
+                                        <div class="dash-td-sub">#{{ $professional->id }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dash-td-truncate" title="{{ $professional->biografia }}">
+                                    {{ Str::limit($professional->biografia, 60) ?? '—' }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dash-td-actions">
+                                    <a href="{{ route('professionals.show', $professional->id) }}"
+                                       class="dash-td-btn" title="Ver perfil">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    @can('is_admin')
+                                        <a href="{{ route('professionals.edit', $professional->id) }}"
+                                           class="dash-td-btn" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form action="{{ route('professionals.destroy', $professional->id) }}" method="POST"
+                                              onsubmit="return confirm('Tem certeza que deseja excluir este profissional?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="dash-td-btn danger" title="Excluir">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </form>
+                                    @endcan
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3">
+                                <div class="dash-table-empty">
+                                    <i class="bi bi-briefcase"></i>
+                                    <div>Nenhum profissional encontrado</div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
-        <button class="w3-button w3-dark-grey">Mais Usuarios<i class="fa fa-arrow-right"></i></button>
     </div>
-</x-page_content>
-<x-footer />
+
+</x-content>
+</x-header_admin>

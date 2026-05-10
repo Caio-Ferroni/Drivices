@@ -1,7 +1,10 @@
+{{--
+    footer_admin.blade.php
 
-    </div><!-- /admin-main -->
+    O fechamento do layout (</div>, </body>, </html>) foi movido para
+    dentro do header_admin.blade.php, que agora é um componente de layout
+    completo com {{ $slot }}.
 
-</body>
-<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('js/masks.js') }}"></script>
-</html>
+    Este arquivo foi mantido vazio para não quebrar chamadas existentes
+    no projeto, mas pode ser removido com segurança.
+--}}
