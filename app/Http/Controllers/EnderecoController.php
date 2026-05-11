@@ -75,7 +75,7 @@ class EnderecoController extends Controller
         if (Auth::user()->cannot('update', $endereco)) {
             abort(404);
         }
-
+        return view('enderecos.enderecos-edit', ['endereco' => $endereco]);
     }
 
     /**

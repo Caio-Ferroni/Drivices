@@ -31,4 +31,6 @@ class Professional extends Model
         return $this->hasOne(Verification::class);
     }
 
+    
+
 }

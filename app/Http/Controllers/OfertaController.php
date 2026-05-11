@@ -15,15 +15,34 @@ class OfertaController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function index(Pedido $pedido)
+    // {
+    //     if (Auth::user()->cannot('view', Oferta::class)) {
+    //         abort(404);
+    //     }
+
+    //     $ofertas = $pedido->ofertas;
+
+    //     return view('ofertas.ofertas', ['ofertas' => $ofertas, 'pedido' => $pedido]);
+    // }
     public function index(Pedido $pedido)
     {
-        if (Auth::user()->cannot('viewAny', Oferta::class)) {
+        if (auth()->user()->cannot('viewAny', [Oferta::class, $pedido])) {
+            // Profissional vê apenas suas próprias ofertas
+            if (auth()->user()->can('is_professional')) {
+                $ofertas = $pedido->ofertas()
+                    ->where('professional_id', auth()->user()->professional->id)
+                    ->get();
+
+                return view('ofertas.ofertas', compact('ofertas', 'pedido'));
+            }
+
             abort(404);
         }
 
         $ofertas = $pedido->ofertas;
 
-        return view('ofertas.ofertas', ['ofertas' => $ofertas]);
+        return view('ofertas.ofertas', compact('ofertas', 'pedido'));
     }
 
     /**
@@ -108,7 +127,7 @@ class OfertaController extends Controller
 
     public function aceitarOferta(Oferta $oferta)
     {
-        if(Auth::user()->cannot('aceitarOferta', Oferta::class)){
+        if (Auth::user()->cannot('aceitarOferta', Oferta::class)) {
             abort(404);
         }
         // Usamos uma Transaction para garantir que, se um falhar, o outro não aconteça

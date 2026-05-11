@@ -2820,3 +2820,34 @@ tbody td {
     transition: gap 0.18s;
 }
 .dash-link:hover { gap: 8px; color: var(--p2); }
+
+/* ═══════════════════════════════════════════════
+   HEADER UPDATES — Adicionar ao final do style.css
+═══════════════════════════════════════════════ */
+
+/* ─── HOME NAVBAR: usuário logado ─── */
+.nav-user-greeting {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.btn-ghost-danger {
+    border-color: rgba(242, 75, 91, 0.3);
+    color: #F24B5B;
+}
+.btn-ghost-danger:hover {
+    background: #FDEAEC;
+    border-color: #F24B5B;
+    color: #F24B5B;
+}
+
+/* ─── SIDEBAR: botão de logout ─── */
+.nav-item-btn {
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+}

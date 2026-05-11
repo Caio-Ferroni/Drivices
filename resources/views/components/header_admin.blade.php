@@ -21,36 +21,70 @@
         @endcan
     </div>
 
+    {{-- MINHA CONTA ── todos --}}
     <div class="sidebar-section-label">Minha Conta</div>
+
     <a href="{{ route('users.show', auth()->id()) }}"
        class="nav-item {{ Route::currentRouteName() === 'users.show' ? 'active' : '' }}">
         <i class="bi bi-person-circle nav-icon"></i>
         Meu Perfil
     </a>
 
+    {{-- Criar perfil profissional: apenas usuários comuns sem perfil profissional --}}
+    @cannot('is_admin')
+        @cannot('is_professional')
+            <a href="{{ route('professionals.create') }}"
+               class="nav-item {{ Route::currentRouteName() === 'professionals.create' ? 'active' : '' }}">
+                <i class="bi bi-briefcase-fill nav-icon"></i>
+                Tornar-me Profissional
+            </a>
+        @endcannot
+    @endcannot
+
+    {{-- Criar endereço: usuários sem endereço (exceto profissional sem endereço também) --}}
+    @if(!auth()->user()->hasEndereco())
+        <a href="{{ route('enderecos.create') }}"
+           class="nav-item {{ Route::currentRouteName() === 'enderecos.create' ? 'active' : '' }}">
+            <i class="bi bi-geo-alt nav-icon"></i>
+            Registrar Endereço
+        </a>
+    @endif
+
+    {{-- ADMINISTRAÇÃO ── apenas admin --}}
     @can('is_admin')
         <div class="sidebar-section-label">Administração</div>
+
         <a href="{{ route('users.index') }}"
            class="nav-item {{ Route::currentRouteName() === 'users.index' ? 'active' : '' }}">
             <i class="bi bi-people nav-icon"></i>
             Usuários
         </a>
+
+        <a href="{{ route('enderecos.index') }}"
+           class="nav-item {{ Route::currentRouteName() === 'enderecos.index' ? 'active' : '' }}">
+            <i class="bi bi-geo-alt nav-icon"></i>
+            Endereços
+        </a>
     @endcan
 
+    {{-- EXPLORAR ── não-admins --}}
     @cannot('is_admin')
         <div class="sidebar-section-label">Explorar</div>
     @endcannot
+
+    {{-- Profissionais: todos --}}
     <a href="{{ route('professionals.index') }}"
        class="nav-item {{ Route::currentRouteName() === 'professionals.index' ? 'active' : '' }}">
         <i class="bi bi-briefcase nav-icon"></i>
         Profissionais
     </a>
 
+    {{-- OPERAÇÕES ── todos --}}
     <div class="sidebar-section-label">Operações</div>
 
     <a href="{{ route('pedidos.index') }}"
        class="nav-item {{ Route::currentRouteName() === 'pedidos.index' ? 'active' : '' }}">
-        <i class="bi bi-clipboard-text nav-icon"></i>
+        <i class="bi bi-clipboard2-check nav-icon"></i>
         @can('is_professional')
             Pedidos Disponíveis
         @elsecan('is_admin')
@@ -59,6 +93,17 @@
             Meus Pedidos
         @endcan
     </a>
+
+    {{-- Fazer pedido: apenas usuários comuns --}}
+    @cannot('is_professional')
+        @cannot('is_admin')
+            <a href="{{ route('pedidos.create') }}"
+               class="nav-item {{ Route::currentRouteName() === 'pedidos.create' ? 'active' : '' }}">
+                <i class="bi bi-clipboard-plus nav-icon"></i>
+                Fazer Pedido
+            </a>
+        @endcannot
+    @endcannot
 
     <a href="{{ route('servicos.index') }}"
        class="nav-item {{ Route::currentRouteName() === 'servicos.index' ? 'active' : '' }}">
@@ -72,8 +117,26 @@
         Relatórios
     </a>
 
+    {{-- RODAPÉ DA SIDEBAR ── --}}
     <div class="sidebar-bottom">
-        <div class="admin-profile">
+
+        {{-- Voltar à home --}}
+        <a href="{{ url('/') }}" class="nav-item">
+            <i class="bi bi-house nav-icon"></i>
+            Página inicial
+        </a>
+
+        {{-- Logout --}}
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="nav-item nav-item-btn w-100">
+                <i class="bi bi-box-arrow-right nav-icon"></i>
+                Sair
+            </button>
+        </form>
+
+        {{-- Perfil do usuário logado --}}
+        <div class="admin-profile mt-2">
             <div class="admin-ava">
                 {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
             </div>
@@ -89,8 +152,8 @@
                     @endcan
                 </div>
             </div>
-            <i class="bi bi-chevron-right ms-auto" style="color: rgba(255,255,255,0.3); font-size: 12px;"></i>
         </div>
+
     </div>
 
 </aside>

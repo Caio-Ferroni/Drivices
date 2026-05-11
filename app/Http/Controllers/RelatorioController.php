@@ -42,7 +42,7 @@ class RelatorioController extends Controller
             abort(404);
         } 
 
-        $relatorio = Relatorio::create($request->validated());
+        $relatorio = Relatorio::create($request->validated() + ['status' => 'concluido']);
 
         return redirect()->route('relatorios.show', $relatorio)
         ->with('success', 'Serviço concluído!');

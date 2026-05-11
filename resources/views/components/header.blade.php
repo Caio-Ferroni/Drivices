@@ -29,15 +29,22 @@
 
             <div class="nav-actions d-flex align-items-center gap-2">
                 @auth
-                    Bem Vindo, {{ auth()->user()->name }}!
-                    <form action="{{ route('logout') }}" method="POST">
-                        <button>sair</button>
+                    <span class="nav-user-greeting">Olá, {{ auth()->user()->name }}</span>
+                    <a href="{{ route('users.show', auth()->id()) }}" class="btn btn-ghost">
+                        <i class="bi bi-speedometer2"></i>
+                        Dashboard
+                    </a>
+                    <form action="{{ route('logout') }}" method="POST" class="m-0">
+                        @csrf
+                        <button type="submit" class="btn btn-ghost btn-ghost-danger">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Sair
+                        </button>
                     </form>
-                    @else
+                @else
                     <a href="{{ route('login') }}" class="btn btn-ghost">Entrar</a>
-                <a href="{{ route('register') }}" class="btn btn-primary-custom">Criar conta grátis</a>
+                    <a href="{{ route('register') }}" class="btn btn-primary-custom">Criar conta grátis</a>
                 @endauth
-                
             </div>
         </div>
 

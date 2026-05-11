@@ -77,7 +77,7 @@
                                     @if($pedido->emergencia)
                                         <span class="dash-badge dash-badge-red">
                                             <i class="bi bi-exclamation-triangle-fill"></i>
-                                            Emergência
+                                            &nbsp Emergência
                                         </span>
                                     @else
                                         <span class="dash-badge dash-badge-neutral">Normal</span>
@@ -109,10 +109,12 @@
                                            class="dash-td-btn" title="Ver detalhes">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="{{ route('pedidos.ofertas.index', $pedido) }}"
+                                        {{-- @if ($pedido->user_id === auth()->user()->id) --}}
+                                            <a href="{{ route('pedidos.ofertas.index', $pedido) }}"
                                            class="dash-td-btn" title="Ver ofertas">
                                             <i class="bi bi-tags"></i>
                                         </a>
+                                        {{-- @endif --}}
                                         @can('update', $pedido)
                                             <a href="{{ route('pedidos.edit', $pedido) }}"
                                                class="dash-td-btn" title="Editar">

@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
+use Database\Factories\ServicoFactory;
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Attributes\Unguarded;
 
 #[Unguarded]
 class Servico extends Model
 {
-    /** @use HasFactory<\Database\Factories\ServicoFactory> */
+    /** @use HasFactory<ServicoFactory> */
     use HasFactory;
 
     public function pedido(): BelongsTo
@@ -33,5 +34,14 @@ class Servico extends Model
     {
         return $this->hasOne(Review::class);
     }
-    
+
+    public function getProfessionalAttribute()
+    {
+        return $this->oferta?->professional;
+    }
+
+    public function getUserAttribute()
+    {
+        return $this->pedido?->user;
+    }
 }

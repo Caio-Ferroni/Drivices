@@ -22,7 +22,7 @@ class RelatorioPolicy
      */
     public function viewAny(User $user): bool
     {
-        return Gate::allows('is_admin') || Gate::allows('is_professional');
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class RelatorioPolicy
      */
     public function view(User $user, Relatorio $relatorio): bool
     {
-        return $user->id === $relatorio->servico->pedido->user_id || $user->id === $relatorio->servico->pedido->user_id;
+        return true;
     }
 
     /**

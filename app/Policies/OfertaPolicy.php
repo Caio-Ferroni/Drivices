@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Oferta;
+use App\Models\Pedido;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
@@ -20,9 +21,9 @@ class OfertaPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user, Pedido $pedido): bool
     {
-        return Gate::allows('is_admin');
+        return Gate::allows('is_admin') || $user->id === $pedido->user_id;
     }
 
     /**
