@@ -33,7 +33,7 @@ class ServicoPolicy
      */
     public function view(User $user, Servico $servico): bool
     {
-        return $user->id === $servico->pedido->user_id || $user->id === $servico->oferta->professional_id;
+        return $user->id === $servico->pedido->user_id || $user->id === $servico->oferta->professional->user->id;
     }
 
     /**

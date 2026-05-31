@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
                 'name' => 'caio',
                 'email' => 'caio@gmail.com',
                 'password' => bcrypt('senha'),
-                'cpf' => '12345678910',
+                'cpf' => '12345678919',
                 'nascimento' => date('Y-m-d'),
                 'tipo' => 'Usuario',
             ],

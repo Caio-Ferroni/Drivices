@@ -7,6 +7,12 @@
             <span>{{ session('success') }}</span>
         </div>
     @endif
+     @if(session('error'))
+        <div class="dash-alert dash-alert-danger">
+            <i class="bi bi-exclamation-circle"></i>
+            <span>{{ session('error') }}</span>
+        </div>
+    @endif
 
     <div class="dash-card">
 

@@ -6,6 +6,7 @@ use App\Models\Oferta;
 use App\Models\Pedido;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class OfertaPolicy
 {
@@ -76,6 +77,6 @@ class OfertaPolicy
 
     public function aceitarOferta(User $user, Oferta $oferta): bool
     {
-        return $user->id === $oferta->pedido->$user_id;
+        return $user->id === $oferta->pedido->user_id;
     }
 }

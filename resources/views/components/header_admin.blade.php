@@ -10,6 +10,7 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
 </head>
 <body class="admin-body">
+    
 
 {{-- ════════ SIDEBAR ════════ --}}
 <aside class="admin-sidebar">

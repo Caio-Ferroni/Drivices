@@ -127,7 +127,7 @@ class OfertaController extends Controller
 
     public function aceitarOferta(Oferta $oferta)
     {
-        if (Auth::user()->cannot('aceitarOferta', Oferta::class)) {
+        if (Auth::user()->cannot('aceitarOferta', $oferta)) {
             abort(404);
         }
         // Usamos uma Transaction para garantir que, se um falhar, o outro não aconteça
