@@ -11,9 +11,14 @@ class Chat extends Model
     /** @use HasFactory<\Database\Factories\ChatFactory> */
     use HasFactory;
 
-    public function usuario(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Usuario::class);
+        return $this->belongsTo(User::class)
+        ->withTrashed()
+        ->withDefault([
+            'name' => 'Usuario Deletado',
+            'email' => 'N/A',
+        ]);
     }
 
     public function professional(): BelongsTo

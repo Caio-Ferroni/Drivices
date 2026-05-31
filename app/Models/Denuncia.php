@@ -11,9 +11,14 @@ class Denuncia extends Model
     /** @use HasFactory<\Database\Factories\DenunciaFactory> */
     use HasFactory;
 
-    public function usuario(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class)
+        ->withTrashed()
+        ->withDefault([
+            'name' => 'Usuario Deletado',
+            'email' => 'N/A',
+        ]);
     }
 
     public function denunciado(): BelongsTo

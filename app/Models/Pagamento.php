@@ -11,8 +11,13 @@ class Pagamento extends Model
     /** @use HasFactory<\Database\Factories\PagamentoFactory> */
     use HasFactory;
 
-    public function usuario(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)
+        ->withTrashed()
+        ->withDefault([
+            'name' => 'Usuario Deletado',
+            'email' => 'N/A',
+        ]);
     }
 }

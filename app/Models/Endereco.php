@@ -17,7 +17,12 @@ class Endereco extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)
+        ->withTrashed()
+        ->withDefault([
+            'name' => 'Usuario Deletado',
+            'email' => 'N/A',
+        ]);
     }
 
     public function pedido(): HasMany
